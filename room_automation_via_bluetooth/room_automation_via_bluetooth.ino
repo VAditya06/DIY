@@ -22,7 +22,7 @@
 #define relay1 2
 #define relay2 3
 #define relay3 4
-LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,2,1,0,4,5,6,7,3, POSITIVE);//Declaring the i2c chip for the lcd screen
+LiquidCrystal_I2C lcd(0x27,2,1,0,4,5,6,7,3, POSITIVE);//Declaring the i2c chip for the lcd screen
 
 char val; //variable to accept the Serial.read() data
 boolean value; //power consumption variable
