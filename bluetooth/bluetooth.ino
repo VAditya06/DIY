@@ -10,6 +10,7 @@
  *  This code is subjected to copyright.
  *  
  *  For further information contact the DEVELOPER with the above given details.
+ *  DOWNLOAD THE APP TO USE THE AUTOMATED FUNCTION FROM THIS REPOSITORY.
  */
 
 
