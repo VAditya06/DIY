@@ -24,6 +24,11 @@
 #define relay3 4
 LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,2,1,0,4,5,6,7,3, POSITIVE);//Declaring the i2c chip for the lcd screen
 
+char val; //variable to accept the Serial.read() data
+boolean value; //power consumption variable
+boolean power; //power consumption variable
+boolean night_light = true; //Backlight variable (to enable backlight for the lcd without overloading)
+
 void switch_off(){      //This function switches off all the lights connected to the relay
   lcd.clear();
   lcd.setCursor(0,0);
@@ -37,6 +42,7 @@ void switch_off(){      //This function switches off all the lights connected to
   digitalWrite(relay2, HIGH);
   digitalWrite(relay3, HIGH);
   backlight_off();
+  night_light = true;
   }
 
 void switch_on(){      //This function switches on all the lights connected to the relay
@@ -60,11 +66,6 @@ void backlight_off(){  //Function to turn the lcd off
   lcd.display();
  }
 
-
-
-char val; //variable to accept the Serial.read() data
-boolean value; //power consumption variable
-boolean power; //power consumption variable
 
 void setup() {
   pinMode(relay1, OUTPUT);//setting the pin mode for all the relay pins as output 
@@ -94,7 +95,6 @@ void setup() {
 void loop() {
   if(Serial.available()>0)//Checking if any serial data is available
     val = Serial.read();//if it is available then reading the data and assigning to val
-
     
     
     //The particular light is turned on
@@ -124,12 +124,17 @@ void loop() {
       lcd.print("LIGHT FIRST");
       delay(5000); // delay 5 seconds
     }
-    digitalWrite(relay2, LOW); //Turnning on the night lamp on
-    power = true;  //Setting the boolean value to true (for switching on and off the fan even when the night lamp is on with the output on the lcd display)
-    lcd.clear();
+    while(night_light == true){  //Loop to print the night light status before powering off the lcd without overloading
+      backlight_on();
+      lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("NIGHT LIGHT ON");
     lcd.noCursor();
+    delay(2000);
+    night_light = false;
+    }
+    digitalWrite(relay2, LOW); //Turnning on the night lamp on
+    power = true;  //Setting the boolean value to true (for switching on and off the fan even when the night lamp is on with the output on the lcd display)
     delay(3000); // delay for 3 seconds
     backlight_off();
     
